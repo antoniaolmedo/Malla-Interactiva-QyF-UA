@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Curricular - Química y Farmacia UA</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #ACCDDD;
+    }
+    h1 {
+      text-align: center;
+    }
+    .semestres {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+    }
+    .semestre {
+      background: #D3ECF8;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      min-width: 250px;
+    }
+    .semestre h3 {
+      text-align: center;
+    }
+    .ramo {
+      background: #ddd;
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .ramo:hover {
+      background: #bbb;
+    }
+    .ramo.aprobado {
+      background: #70d3cd;
+      text-decoration: line-through;
+      cursor: pointer;
+    }
+    .ramo.bloqueado {
+      background: #247aa2;
+      color: #000000;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Malla Curricular - Química y Farmacia UA</h1>
+<div class="semestres" id="malla"></div>
+
+<script>
+  const malla = [
+  {
+    "nombre": "Semestre 1",
+    "ramos": [
+      {
+        "id": "mat1",
+        "nombre": "Matemática",
+        "prerrequisitos": []
+      },
+      {
+        "id": "qui_gen",
+        "nombre": "Química general",
+        "prerrequisitos": []
+      },
+      {
+        "id": "bio_hist",
+        "nombre": "Biología celular e histología",
+        "prerrequisitos": []
+      },
+      {
+        "id": "fund_c_f",
+        "nombre": "Fundamentos de las ciencias farmacéuticas",
+        "prerrequisitos": []
+      },
+      {
+        "id": "intro_far",
+        "nombre": "Introducción a la farmacia",
+        "prerrequisitos": []
+      },
+      {
+        "id": "comunica",
+        "nombre": "Comunicación en contexto",
+        "prerrequisitos": []
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 2",
+    "ramos": [
+      {
+        "id": "calculo",
+        "nombre": "Cálculo",
+        "prerrequisitos": [
+          "mat1"
+        ]
+      },
+      {
+        "id": "qui_inorg",
+        "nombre": "Química inorgánica",
+        "prerrequisitos": [
+          "qui_gen"
+        ]
+      },
+      {
+        "id": "bioq",
+        "nombre": "Bioquímica",
+        "prerrequisitos": [
+          "qui_gen",
+          "bio_hist"
+        ]
+      },
+      {
+        "id": "evol_meds",
+        "nombre": "Evolución de los medicamentos",
+        "prerrequisitos": []
+      },
+      {
+        "id": "farm_priv",
+        "nombre": "Farmacia privada",
+        "prerrequisitos": [
+          "intro_far"
+        ]
+      },
+      {
+        "id": "elec_com",
+        "nombre": "Electivo de comunicación",
+        "prerrequisitos": []
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 3",
+    "ramos": [
+      {
+        "id": "fisica",
+        "nombre": "Física aplicada",
+        "prerrequisitos": [
+          "calculo"
+        ]
+      },
+      {
+        "id": "qui_anal",
+        "nombre": "Química analítica",
+        "prerrequisitos": [
+          "qui_inorg"
+        ]
+      },
+      {
+        "id": "bioest",
+        "nombre": "Bioestadística",
+        "prerrequisitos": [
+          "mat1"
+        ]
+      },
+      {
+        "id": "fisio",
+        "nombre": "Fisiología general",
+        "prerrequisitos": [
+          "bioq"
+        ]
+      },
+      {
+        "id": "legis",
+        "nombre": "Legislación farmacéutica",
+        "prerrequisitos": []
+      },
+      {
+        "id": "elec_pens",
+        "nombre": "Electivo de desarrollo del pensamiento",
+        "prerrequisitos": []
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 4",
+    "ramos": [
+      {
+        "id": "qui_org",
+        "nombre": "Química orgánica",
+        "prerrequisitos": [
+          "qui_gen"
+        ]
+      },
+      {
+        "id": "fisio_pat",
+        "nombre": "Fisiopatología",
+        "prerrequisitos": [
+          "fisio"
+        ]
+      },
+      {
+        "id": "farma_fit",
+        "nombre": "Farmacognosia y fitoterapia",
+        "prerrequisitos": [
+          "qui_anal"
+        ]
+      },
+      {
+        "id": "anal_quim",
+        "nombre": "Análisis químico e instrumental",
+        "prerrequisitos": [
+          "qui_anal"
+        ]
+      },
+      {
+        "id": "micro",
+        "nombre": "Microbiología y parasitología",
+        "prerrequisitos": [
+          "bioq"
+        ]
+      },
+      {
+        "id": "taller_bio",
+        "nombre": "Taller integrado de biociencias",
+        "prerrequisitos": [
+          "qui_inorg",
+          "evol_meds"
+        ]
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 5",
+    "ramos": [
+      {
+        "id": "farma",
+        "nombre": "Farmacología",
+        "prerrequisitos": [
+          "fisio"
+        ]
+      },
+      {
+        "id": "fqm1",
+        "nombre": "Farmacoquímica 1",
+        "prerrequisitos": [
+          "qui_org"
+        ]
+      },
+      {
+        "id": "fisiq_farm",
+        "nombre": "Físicoquímica farmacéutica",
+        "prerrequisitos": [
+          "fisica",
+          "qui_org"
+        ]
+      },
+      {
+        "id": "epidemio",
+        "nombre": "Epidemiología",
+        "prerrequisitos": [
+          "micro"
+        ]
+      },
+      {
+        "id": "inv_c_f",
+        "nombre": "Introducción a la investigación en ciencias farmacéuticas",
+        "prerrequisitos": [
+          "bioest"
+        ]
+      },
+      {
+        "id": "elec_pers",
+        "nombre": "Electivo de desarrollo personal",
+        "prerrequisitos": []
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 6",
+    "ramos": [
+      {
+        "id": "farma_sist",
+        "nombre": "Farmacología de sistemas",
+        "prerrequisitos": [
+          "farma"
+        ]
+      },
+      {
+        "id": "fqm2",
+        "nombre": "Farmacoquímica 2",
+        "prerrequisitos": [
+          "fqm1"
+        ]
+      },
+      {
+        "id": "tec_far1",
+        "nombre": "Tecnología farmacéutica 1",
+        "prerrequisitos": [
+          "anal_quim",
+          "fisiq_farm"
+        ]
+      },
+      {
+        "id": "salud_pub",
+        "nombre": "Salud pública",
+        "prerrequisitos": [
+          "epidemio"
+        ]
+      },
+      {
+        "id": "metod_inv",
+        "nombre": "Metodología de la investigación farmacéutica",
+        "prerrequisitos": [
+          "inv_c_f"
+        ]
+      },
+      {
+        "id": "elec_soc",
+        "nombre": "Electivo de responsabilidad social",
+        "prerrequisitos": []
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 7",
+    "ramos": [
+      {
+        "id": "tec_far2",
+        "nombre": "Tecnología farmacéutica 2",
+        "prerrequisitos": [
+          "tec_far1"
+        ]
+      },
+      {
+        "id": "bioq_clin",
+        "nombre": "Bioquímica clínica",
+        "prerrequisitos": [
+          "fisio_pat",
+          "salud_pub"
+        ]
+      },
+      {
+        "id": "diseno_inv",
+        "nombre": "Diseño de proyectos en investigación farmacéutica",
+        "prerrequisitos": [
+          "metod_inv"
+        ]
+      },
+      {
+        "id": "farm_asist",
+        "nombre": "Farmacia asistencial",
+        "prerrequisitos": [
+          "farma"
+        ]
+      },
+      {
+        "id": "pract1",
+        "nombre": "Práctica 1 en oficina de farmacia",
+        "prerrequisitos": [
+          "farma_sist",
+          "fqm2"
+        ]
+      },
+      {
+        "id": "elec_etica",
+        "nombre": "Electivo de ética",
+        "prerrequisitos": []
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 8",
+    "ramos": [
+      {
+        "id": "tec_cosm",
+        "nombre": "Tecnología cosmética",
+        "prerrequisitos": [
+          "tec_far2"
+        ]
+      },
+      {
+        "id": "tox",
+        "nombre": "Toxicología",
+        "prerrequisitos": [
+          "farma_sist",
+          "bioq_clin"
+        ]
+      },
+      {
+        "id": "sem_grado",
+        "nombre": "Seminario de grado",
+        "prerrequisitos": [
+          "diseno_inv"
+        ]
+      },
+      {
+        "id": "farm_clin",
+        "nombre": "Farmacia clínica",
+        "prerrequisitos": [
+          "bioq_clin",
+          "farma_sist"
+        ]
+      },
+      {
+        "id": "taller_farma",
+        "nombre": "Taller integrado de farmacología",
+        "prerrequisitos": [
+          "pract1"
+        ]
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 9",
+    "ramos": [
+      {
+        "id": "eco_mark",
+        "nombre": "Economía y marketing farmacéutico",
+        "prerrequisitos": [
+          "sem_grado"
+        ]
+      },
+      {
+        "id": "pract2",
+        "nombre": "Práctica 2: farmacia asistencial",
+        "prerrequisitos": [
+          "farm_asist",
+          "farm_clin"
+        ]
+      }
+    ]
+  },
+  {
+    "nombre": "Semestre 10",
+    "ramos": [
+      {
+        "id": "fvg",
+        "nombre": "Farmacovigilancia",
+        "prerrequisitos": [
+          "farm_clin"
+        ]
+      },
+      {
+        "id": "pract3",
+        "nombre": "Práctica 3: farmacia clínica",
+        "prerrequisitos": [
+          "pract2"
+        ]
+      }
+    ]
+  }
+];
+
+  let estadoRamos = JSON.parse(localStorage.getItem("estadoRamos")) || {};
+
+  function cumplePrerrequisitos(ramo) {
+    return ramo.prerrequisitos.every(id => estadoRamos[id]);
+  }
+
+  function guardarEstado() {
+    localStorage.setItem("estadoRamos", JSON.stringify(estadoRamos));
+  }
+
+  function actualizarMalla() {
+    const contenedor = document.getElementById('malla');
+    contenedor.innerHTML = '';
+
+    malla.forEach(semestre => {
+      const divSemestre = document.createElement('div');
+      divSemestre.className = 'semestre';
+
+      const titulo = document.createElement('h3');
+      titulo.textContent = semestre.nombre;
+      divSemestre.appendChild(titulo);
+
+      semestre.ramos.forEach(ramo => {
+        const divRamo = document.createElement('div');
+        divRamo.className = 'ramo';
+        divRamo.id = ramo.id;
+        divRamo.textContent = ramo.nombre;
+
+        const aprobado = estadoRamos[ramo.id] === true;
+
+        if (aprobado) {
+          divRamo.classList.add('aprobado');
+        } else if (!cumplePrerrequisitos(ramo)) {
+          divRamo.classList.add('bloqueado');
+        }
+
+        divRamo.addEventListener('click', () => {
+          if (cumplePrerrequisitos(ramo) || aprobado) {
+            estadoRamos[ramo.id] = !aprobado;
+            guardarEstado();
+            actualizarMalla();
+          }
+        });
+
+        divSemestre.appendChild(divRamo);
+      });
+
+      contenedor.appendChild(divSemestre);
+    });
+  }
+
+  actualizarMalla();
+</script>
+
+</body>
+</html>
